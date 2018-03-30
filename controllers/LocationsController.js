@@ -16,5 +16,16 @@ module.exports = {
     db.create_location(locationObj).then(results => {
       res.send(result[0]);
     });
+  },
+
+  delete: (req, res) => {
+    const db = req.app.get('db')
+    const user_id = req.user.id;
+
+    const { id: location_id } = req.params
+
+    db.delete_location({ location_id, user_id }).then(locations => {
+      res.send(locations)
+    })
   }
 };

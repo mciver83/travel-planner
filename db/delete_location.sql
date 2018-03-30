@@ -10,3 +10,7 @@ WHERE location_id = ${location_id};
 
 DELETE FROM locations
 WHERE id = ${location_id};
+
+SELECT *
+FROM locations
+WHERE user_id = ${user_id};

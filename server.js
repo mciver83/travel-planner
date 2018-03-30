@@ -95,6 +95,7 @@ app.get("/auth/me", (req, res) => {
 
 app.get("/api/locations", isAuthenticated, LocationsController.get);
 app.post("/api/locations", isAuthenticated, LocationsController.create);
+app.delete('/api/locations/:id', isAuthenticated, LocationsController.delete);
 
 app.listen(port, () => {
   console.log("listening on port", port);
