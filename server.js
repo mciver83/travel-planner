@@ -97,6 +97,10 @@ app.get("/api/locations", isAuthenticated, LocationsController.get);
 app.post("/api/locations", isAuthenticated, LocationsController.create);
 app.delete('/api/locations/:id', isAuthenticated, LocationsController.delete);
 
+app.get('/api/locations/:location_id/categories', CategoriesController.get);
+app.post('/api/locations/:location_id/categories', CategoriesController.create);
+app.delete('/api/locations/:location_id/categories/:category_id', CategoriesController.delete);
+
 app.listen(port, () => {
   console.log("listening on port", port);
 });
