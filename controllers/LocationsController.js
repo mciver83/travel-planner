@@ -12,9 +12,8 @@ module.exports = {
     const user_id = req.user.id;
 
     let locationObj = { ...req.body, user_id };
-
     db.create_location(locationObj).then(results => {
-      res.send(result[0]);
+      res.send(results);
     });
   },
 
