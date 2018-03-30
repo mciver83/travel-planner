@@ -7,6 +7,7 @@ const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 
 const LocationsController = require("./controllers/LocationsController");
+const CategoriesController = require('./controllers/CategoriesController')
 
 const isAuthenticated = require("./middleware/isAuthenticated");
 
