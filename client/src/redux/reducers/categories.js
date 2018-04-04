@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const initialState = {
-  data: []
+  data: [],
+  location: {}
 }
 
 const GET_CATEGORIES = 'GET_CATEGORIES'

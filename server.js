@@ -5,6 +5,12 @@ const cors = require("cors");
 const massive = require("massive");
 const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
+const axios = require('axios');
+
+const Yelp = require('node-yelp-api-v3');
+const yelp = new Yelp({
+  consumer_key: 'fHMOW1G1Y1OI54f5YTOOjFRYnokBSx7fECt7eq_CRdqmeJ_FsiF3f9-ujGwHunQlNFTpykcCuqCT5YVhRDMB5w9j0OvMn3kA_QMSUxszzOrnC92RDky6h8BHwq2_WnYx'
+});
 
 const LocationsController = require("./controllers/LocationsController");
 const CategoriesController = require('./controllers/CategoriesController')
@@ -93,6 +99,30 @@ app.get("/auth/me", (req, res) => {
     return res.status(404).send("user not authenticated");
   }
 });
+
+app.post('/yelp', async (req, res) => {
+  let { location, categories } = req.body
+  if (!location || !categories) return res.send('nope')
+  let { city, state, country } = location
+  let headers = {
+    Authorization: 'Bearer fHMOW1G1Y1OI54f5YTOOjFRYnokBSx7fECt7eq_CRdqmeJ_FsiF3f9-ujGwHunQlNFTpykcCuqCT5YVhRDMB5w9j0OvMn3kA_QMSUxszzOrnC92RDky6h8BHwq2_WnYx'
+  }
+
+  try {
+    var categoriesWithYelpData = await Promise.all(categories.map(async category => {
+      let response = await axios.get(`https://api.yelp.com/v3/businesses/search?location=${city},${state},${country}&term=${category.name}`, { headers }).then(response => {
+        return { ...category, yelp: response.data.businesses }
+      })
+      return response
+    }));
+
+    res.send(categoriesWithYelpData)
+  } catch (error) {
+    console.error('error:', error);
+    res.status(500).send(err);
+  }
+
+})
 
 app.get("/api/locations", isAuthenticated, LocationsController.get);
 app.post("/api/locations", isAuthenticated, LocationsController.create);
